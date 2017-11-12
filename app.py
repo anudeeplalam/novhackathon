@@ -94,6 +94,7 @@ def getJobDetails(data):
 def getAllJobs(data):
     allJobs = []
     allJobsStr = ""
+    #jsonbody = ""
     index = 0
 
     for job in data['jobs']:
@@ -102,9 +103,15 @@ def getAllJobs(data):
     for job in allJobs:
         index = index + 1
         allJobsStr = allJobsStr + str(index)+"." + str(job) + "\n"
+        #jsonbody = jsonbody + "{\"value\":\"" + str(job) + "\"},"
 
     output = "Your Jenkins instance has " + str(index) + " jobs.\n" + \
              allJobsStr
+    #url = "https://api.dialogflow.com/v1/entities/"
+    #headers = {"Content-Type":"application/json","Authorization":"Bearer d9bd5f4be39d43bd80b24099151305db"}
+    #body = {"entries": "[" + jsonbody + "]","name": "jobs"}
+    #pprint(body)
+    #r = requests.put(url, data=json.dumps(body), headers=headers)
     return(output)
 
 
