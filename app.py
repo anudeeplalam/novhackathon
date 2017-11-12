@@ -76,6 +76,15 @@ def processRequest(req):
         res = makeWebhookResult(output)
         return res
 
+    if req.get("result").get("action") == "getjobinfo":
+        jenkins_url = baseurl + "/api/json"
+        result = urlopen(jenkins_url).read()
+        data = json.loads(result)
+        output = getJobInfo(data)
+        res = makeWebhookResult(output)
+        return res
+
+
 def getjobname(req):
     result = req.get("result")
     parameters = result.get("parameters")
@@ -89,6 +98,17 @@ def getJobDetails(data):
     output = "Total Number of Builds are: " + str(lastBuild) + \
              "\nLast Stable Build is: " + str(lastStableBuild)
     return output
+
+
+def getJobInfo(data):
+    allJobs = []
+
+    for job in data['jobs']:
+        allJobs.append(job['name'])
+
+    output = "Your Jenkins instance has " + str(len(allJobs)) + " jobs.\n" + \
+             "Would you like me to list all jobs?"
+    return(output)
 
 
 def getAllJobs(data):
@@ -105,8 +125,7 @@ def getAllJobs(data):
         allJobsStr = allJobsStr + str(index)+"." + str(job) + "\n"
         #jsonbody = jsonbody + "{\"value\":\"" + str(job) + "\"},"
 
-    output = "Your Jenkins instance has " + str(index) + " jobs.\n" + \
-             allJobsStr
+    output = allJobsStr
     #url = "https://api.dialogflow.com/v1/entities/"
     #headers = {"Content-Type":"application/json","Authorization":"Bearer d9bd5f4be39d43bd80b24099151305db"}
     #body = {"entries": "[" + jsonbody + "]","name": "jobs"}
