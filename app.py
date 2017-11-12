@@ -68,9 +68,20 @@ def getJobDetails(data):
 
 
 def getAllJobs(data):
-    nodeDescription = data["nodeDescription"]
-    output = "nodeDescription is: " + str(nodeDescription)
-    return output
+    allJobs = []
+    allJobsStr = ""
+    index = 0
+
+    for job in data['jobs']:
+        allJobs.append(job['name'])
+    
+    for job in allJobs:
+        index = index + 1
+        allJobsStr = allJobsStr + str(index)+"." + str(job) + "\n"
+
+    output = "Your Jenkins instance has " + str(index) + " jobs.\n" + \
+             allJobsStr
+    return(output)
 
 
 def makeWebhookResult(output):
