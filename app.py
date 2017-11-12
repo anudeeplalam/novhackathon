@@ -54,8 +54,8 @@ def getjobinfo(req):
 
 
 def makeWebhookResult(data):
-    description = data.get('buildable')
-    output = "buildable is: " + description
+    description = data
+    output = "data is: " + description
 
     print("Response:")
     print(output)
