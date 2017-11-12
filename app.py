@@ -54,8 +54,8 @@ def getjobinfo(req):
 
 
 def makeWebhookResult(data):
-    description = data
-    output = "data is: " + description
+    description = data.get("fullName")
+    output = "fullName is: " + description
 
     print("Response:")
     print(output)
