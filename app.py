@@ -55,8 +55,7 @@ def getjobinfo(req):
 
 def makeWebhookResult(data):
     displayName = data["displayName"]
-    lastStableBuild = data["lastStableBuild"]["number"]
-    output = "displayName is: " + str(description) + "lastStableBuild is:" + str(lastStableBuild)
+    output = "displayName is: " + str(description)
 
     print("Response:")
     print(output)
