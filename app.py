@@ -56,7 +56,7 @@ def getjobinfo(req):
 def makeWebhookResult(data):
     description = data.get('description')
     lastSuccessfulBuild = data.get('lastSuccessfulBuild')
-    output = "The description of your job is : " + description + "\nThe lastSuccessfulBuild is : " + lastSuccessfulBuild.get('number')
+    output = "The description of your job is : " + description + "The lastSuccessfulBuild is : " + lastSuccessfulBuild.get('number')
 
     print("Response:")
     print(output)
