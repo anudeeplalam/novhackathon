@@ -1,3 +1,4 @@
 Flask==0.10.1
 future==0.16.0
 requests==2.18.4
+python-jenkins==0.4.14

@@ -36,12 +36,16 @@ def webhook():
 
 def processRequest(req):
     baseurl = "http://104.196.56.147:9090"
+    username = "hackadmin"
+    token = "b3e2a79dfc1d7186e35744c2016fd899"
 
     if req.get("result").get("action") == "startbuild":
         jobname = getjobname(req)
-        jenkins_url = baseurl + "/job/" + jobname + "/build"
-        result = requests.post(jenkins_url)
-        res = makeWebhookResult(result)		
+        server = jenkins.Jenkins(baseurl, username=username, password=token)
+        result = server.build_job(jobname)
+        res = makeWebhookResult(result)
+        if(res = ""):
+            res = "Successfully started the build of " + jobname
         return res
 
     if req.get("result").get("action") == "jobdetails":
