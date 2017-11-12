@@ -6,6 +6,7 @@ from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 
+import requests
 import json
 import os
 
@@ -35,6 +36,13 @@ def webhook():
 
 def processRequest(req):
     baseurl = "http://104.196.56.147:9090"
+
+    if req.get("result").get("action") == "startbuild":
+        jobname = getjobname(req)
+        jenkins_url = baseurl + "/job/" + jobname + "/build"
+        result = requests.post(jenkins_url)
+        res = makeWebhookResult(result)		
+        return res
 
     if req.get("result").get("action") == "jobdetails":
         jobname = getjobname(req)
