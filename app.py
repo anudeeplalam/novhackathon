@@ -113,19 +113,15 @@ def getJobInfo(data):
 
 def getAllJobs(data):
     allJobs = []
-    allJobsStr = ""
     #jsonbody = ""
-    index = 0
 
     for job in data['jobs']:
         allJobs.append(job['name'])
     
-    for job in allJobs:
-        index = index + 1
-        allJobsStr = allJobsStr + str(index)+"." + str(job) + "\n"
+    #for job in allJobs:
         #jsonbody = jsonbody + "{\"value\":\"" + str(job) + "\"},"
 
-    output = allJobsStr
+    output = "\n".join(allJobs)
     #url = "https://api.dialogflow.com/v1/entities/"
     #headers = {"Content-Type":"application/json","Authorization":"Bearer d9bd5f4be39d43bd80b24099151305db"}
     #body = {"entries": "[" + jsonbody + "]","name": "jobs"}
