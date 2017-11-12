@@ -60,7 +60,8 @@ def makeWebhookResult(data):
     output = "The lastSuccessfulBuild is : " + lastSuccessfulBuild.get('number')
 
     print("Response:")
-    print(output)
+    print(builds)
+    print(lastSuccessfulBuild)
 
     return {
         "speech": builds,
