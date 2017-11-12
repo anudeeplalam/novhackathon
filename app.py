@@ -7,6 +7,7 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 
 import requests
+import jenkins
 import json
 import os
 
@@ -42,10 +43,14 @@ def processRequest(req):
     if req.get("result").get("action") == "startbuild":
         jobname = getjobname(req)
         server = jenkins.Jenkins(baseurl, username=username, password=token)
-        result = server.build_job(jobname)
-        res = makeWebhookResult(result)
-        if(res = ""):
-            res = "Successfully started the build of " + jobname
+        try:
+            result = server.build_job(jobname)
+            if not result:
+                output = "Successfully started the build of " + jobname
+        except Exception as e:
+            output = "Failed to started the build of " + jobname + \
+                     " becasue of " + str(e)
+        res = makeWebhookResult(output)
         return res
 
     if req.get("result").get("action") == "jobdetails":
