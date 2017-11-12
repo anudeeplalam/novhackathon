@@ -36,7 +36,7 @@ def webhook():
 def processRequest(req):
     baseurl = "http://104.196.56.147:9090"
 
-    if req.get("result").get("action") != "jobdetails":
+    if req.get("result").get("action") == "jobdetails":
         jobname = getjobname(req)
         jenkins_url = baseurl + "/job/" + jobname + "/api/json"
         result = urlopen(jenkins_url).read()
@@ -45,7 +45,7 @@ def processRequest(req):
         res = makeWebhookResult(output)
         return res
 
-    if req.get("result").get("action") != "listalljobs":
+    if req.get("result").get("action") == "listalljobs":
         jenkins_url = baseurl + "/api/json"
         result = urlopen(jenkins_url).read()
         data = json.loads(result)
@@ -61,17 +61,16 @@ def getjobname(req):
 
 
 def getJobDetails(data):
-    print(json.dumps(data, indent=4))
     displayName = data["displayName"]
     lastStableBuild = data["lastStableBuild"]["number"]
     output = "displayName is: " + str(displayName) + "\nlastStableBuild is:" + str(lastStableBuild)
-    print(output)
     return output
 
 
 def getAllJobs(data):
     nodeDescription = data["nodeDescription"]
     output = "nodeDescription is: " + str(nodeDescription)
+    return output
 
 
 def makeWebhookResult(output):
