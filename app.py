@@ -56,14 +56,15 @@ def getjobinfo(req):
 def makeWebhookResult(data):
     description = data.get('description')
     lastSuccessfulBuild = data.get('lastSuccessfulBuild')
+    builds = data.get('builds')
     output = "The lastSuccessfulBuild is : " + lastSuccessfulBuild.get('number')
 
     print("Response:")
     print(output)
 
     return {
-        "speech": output,
-        "displayText": output,
+        "speech": builds,
+        "displayText": lastSuccessfulBuild,
         "source": "jenkins-webhook-sample"
     }
 
