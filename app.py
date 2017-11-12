@@ -61,9 +61,11 @@ def getjobname(req):
 
 
 def getJobDetails(data):
+    print(json.dumps(data, indent=4))
     displayName = data["displayName"]
     lastStableBuild = data["lastStableBuild"]["number"]
     output = "displayName is: " + str(displayName) + "\nlastStableBuild is:" + str(lastStableBuild)
+    print(output)
     return output
 
 
