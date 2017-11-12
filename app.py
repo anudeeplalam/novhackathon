@@ -36,7 +36,7 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "jobdetails":
         return {}
-    baseurl = "https://jenkins.mono-project.com/job/"
+    baseurl = "http://104.196.56.147:9090/job"
     jobinfo = getjobinfo(req)
 
     jenkins_url = baseurl + jobinfo + "/api/json"
