@@ -9,6 +9,7 @@ from urllib.error import HTTPError
 import requests
 import jenkins
 import json
+import time
 import os
 
 from flask import Flask
@@ -45,10 +46,15 @@ def processRequest(req):
         server = jenkins.Jenkins(baseurl, username=username, password=token)
         try:
             result = server.build_job(jobname)
+            time.sleep(2)
             if not result:
-                output = "Successfully started the build of " + jobname
+                jenkins_url = baseurl + "/job/" + jobname + "/api/json"
+                result = urlopen(jenkins_url).read()
+                data = json.loads(result)
+                lastBuild = data["lastBuild"]["number"]
+                output = "Successfully started the build " + str(lastBuild) + " for " + jobname + " project"
         except Exception as e:
-            output = "Failed to started the build of " + jobname + \
+            output = "Failed to start the build of " + jobname + \
                      " becasue of " + str(e)
         res = makeWebhookResult(output)
         return res
@@ -78,9 +84,10 @@ def getjobname(req):
 
 
 def getJobDetails(data):
-    displayName = data["displayName"]
+    lastBuild = data["lastBuild"]["number"]
     lastStableBuild = data["lastStableBuild"]["number"]
-    output = "displayName is: " + str(displayName) + "\nlastStableBuild is:" + str(lastStableBuild)
+    output = "Total Number of Builds are: " + str(lastBuild) + \
+             "\nLast Stable Build is: " + str(lastStableBuild)
     return output
 
 
