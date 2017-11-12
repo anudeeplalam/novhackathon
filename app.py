@@ -34,17 +34,24 @@ def webhook():
 
 
 def processRequest(req):
+    baseurl = "http://104.196.56.147:9090"
+
     if req.get("result").get("action") != "jobdetails":
-        return {}
-    baseurl = "http://104.196.56.147:9090/job/"
-    jobinfo = getjobinfo(req)
+        jobinfo = getjobinfo(req)
+        jenkins_url = baseurl + "/job/" + jobinfo + "/api/json"
+        result = urlopen(jenkins_url).read()
+        data = json.loads(result)
+        output = getJobDetails(data)
+        res = makeWebhookResult(output)
+        return res
 
-    jenkins_url = baseurl + jobinfo + "/api/json"
-    result = urlopen(jenkins_url).read()
-    data = json.loads(result)
-    res = makeWebhookResult(data)
-    return res
-
+    if req.get("result").get("action") != "listalljobs":
+        jenkins_url = baseurl + "/api/json"
+        result = urlopen(jenkins_url).read()
+        data = json.loads(result)
+        output = getAllJobs(data)
+        res = makeWebhookResult(output)
+        return res
 
 def getjobinfo(req):
     result = req.get("result")
@@ -53,11 +60,19 @@ def getjobinfo(req):
     return jobname
 
 
-def makeWebhookResult(data):
+def getJobDetails(data):
     displayName = data["displayName"]
     lastStableBuild = data["lastStableBuild"]["number"]
     output = "displayName is: " + str(displayName) + "\nlastStableBuild is:" + str(lastStableBuild)
+    return output
 
+
+def getAllJobs(baseurl):
+    nodeDescription = data["nodeDescription"]
+    output = "nodeDescription is: " + str(nodeDescription)
+
+
+def makeWebhookResult(data):
     print("Response:")
     print(output)
 
